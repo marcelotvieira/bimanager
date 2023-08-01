@@ -1,5 +1,7 @@
 import * as dotenv from 'dotenv';
-import express from 'express';
+import * as express from 'express';
+import { errorHanlder } from './Error/errorHandler';
+import userRouter from './modules/User/routes';
 
 class App {
   public app: express.Express;
@@ -18,10 +20,11 @@ class App {
   }
 
   private routes(): void {
-
+    this.app.use(userRouter);
   }
 
   private errorConfig(): void {
+    this.app.use(errorHanlder);
   }
   
   public start(PORT: string | number): void {
