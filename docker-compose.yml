@@ -1,0 +1,23 @@
+version: "3"
+services:
+  db:
+    image: mysql:latest
+    restart: unless-stopped
+    ports:
+      - '3306:3306'
+    env_file:
+      - ./db/.env
+  webapp:
+    container_name: web_app
+    build: ./api
+    restart: on-failure
+    ports:
+      - '3001:3001'
+    depends_on:
+      - db
+    volumes:
+      - ./api:/app
+    env_file:
+      - ./api/.env
+    tty: true
+    stdin_open: true
