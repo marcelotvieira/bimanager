@@ -1,0 +1,31 @@
+import { Request, Response } from 'express';
+import { ApiError } from '../../../Error/ApiError';
+import { prisma } from '../../../prisma/prisma';
+import { DatabaseService } from '../services';
+
+export class DatabaseController {
+  private _service: DatabaseService;
+
+  constructor(service: DatabaseService) {
+    this._service = service;
+  }
+
+  public async create(req: Request, res: Response) {
+    const user = await prisma.user.findUnique({where: { id: req.body.ownerId}});
+    if (!user) ApiError.notFound('User passed as owner does not exist');
+    const newConnection  = await this._service.create(req.body);
+    res.status(200).json({
+      message: 'Connection created successfully',
+      connection: newConnection
+    });
+  }
+
+  public async update(req: Request, res: Response) {
+    const newConnection = await this._service.update(req.params.id, req.body);
+    res.status(200).json({
+      message: 'Connection updated successfully',
+      connection: newConnection
+    });
+  }
+
+}

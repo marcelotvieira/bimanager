@@ -8,12 +8,13 @@ export class UserController {
     this._service = service;
   }
 
-  public async get(req: Request, res: Response): Promise<void> {
-    const rows = await this._service.get();
-    res.status(200).json(rows);
+  public async create(req: Request, res: Response): Promise<void> {
+    const newUser = await this._service.create(req.body);
+    res.status(200).json(newUser);
   }
   public async authenticate(req: Request, res: Response) {
-    const user = await this._service.authenticate(req.body.username);
+    const user = await this._service.authenticate(req.body);
     res.status(200).json(user);
   }
+  
 }

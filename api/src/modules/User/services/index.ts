@@ -1,10 +1,18 @@
+import { Prisma } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 import { ApiError } from '../../../Error/ApiError';
 import { prisma } from '../../../prisma/prisma';
+import generateToken from '../../../utils/generateJwt';
+
+interface UserAuthenticationData {
+  username: string;
+  password: string;
+}
 
 export class UserService {
   private _userModel = prisma.user;
 
-  public async get() {
+  private async get() {
     return await this._userModel.findMany(
       {
         select: {
@@ -18,29 +26,50 @@ export class UserService {
     );
   }
 
-  public async authenticate(userName: string) {
+  private async update(id: string, data: Prisma.UserUpdateInput) {
+    return await this._userModel.update({
+      where: { id: Number(id) },
+      data
+    });
+  }
+
+  private async activate(id: string) {
+    return await this._userModel.update({
+      where: { id: Number(id) },
+      data: { isRandomPassword: false }
+    });
+  }
+
+  public async create(payload: Prisma.UserCreateInput) {
+    const password = await bcrypt.hash(payload.password, 10);
+    const newUser = await this._userModel.create({ data: { ...payload, password } });
+    const token = generateToken({ email: newUser.email, username: newUser.username });
+    return { token };
+  }
+
+  public async authenticate(payload: UserAuthenticationData) {
     const user = await this._userModel.findFirst({
-      where: {
+      where: { 
         OR: [
-          {
-            email: userName
-          },
-          {
-            username: userName
-          }
+          { email: payload.username },
+          { username: payload.username },
         ]
-      },
-      select: {
-        id: true,
-        email: true,
-        username: true,
-        isRandomPassword: true,
-        databases: true
       }
     });
-    
-    if (!user) return ApiError.notFound('User not found');
 
-    return user;
+    if (!user) {
+      return ApiError.notFound('Invalid credentials');
+    }
+
+    const isMatch = await bcrypt.compare(payload.password, user.password,);
+    if (!isMatch) {
+      return ApiError.notFound('Invalid credentials');
+    }
+
+    const token = generateToken({ email: user.email, username: user.username });
+
+    return { token };
+
   }
+
 }

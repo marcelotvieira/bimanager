@@ -8,10 +8,11 @@ const userRouter = Router();
 
 const userController = new UserController(new UserService());
 
-userRouter.get(
-  '/users',
-  asyncHandler((req: Request, res: Response) => userController.get(req, res)),
+userRouter.post(
+  '/users/register',
+  asyncHandler((req: Request, res: Response) => userController.create(req, res)),
 );
+
 
 userRouter.post(
   '/users/signin',
