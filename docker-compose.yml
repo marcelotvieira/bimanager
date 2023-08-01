@@ -7,6 +7,7 @@ services:
       - '3306:3306'
     env_file:
       - ./db/.env
+
   webapp:
     container_name: web_app
     build: ./api
@@ -21,3 +22,4 @@ services:
       - ./api/.env
     tty: true
     stdin_open: true
+    command: sh -c "until npx prisma db ping; do sleep 1; done && npx prisma migrate dev"
