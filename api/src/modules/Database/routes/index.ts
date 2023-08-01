@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import * as asyncHandler from 'express-async-handler';
-import { DatabaseController } from './controllers';
-import { DatabaseService } from './services';
+import { DatabaseController } from '../controllers';
+import { DatabaseService } from '../services';
 
 const databaseRouter = Router();
 
