@@ -16,5 +16,10 @@ export class UserController {
     const user = await this._service.authenticate(req.body);
     res.status(200).json(user);
   }
+
+  public async getUserConnections(req: Request, res: Response) {
+    const user = await this._service.getUserConnections(req.params.id);
+    res.status(200).json(user);
+  }
   
 }

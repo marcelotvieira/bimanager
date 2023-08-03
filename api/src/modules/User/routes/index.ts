@@ -19,4 +19,9 @@ userRouter.post(
   asyncHandler((req: Request, res: Response) => userController.authenticate(req, res))
 );
 
+userRouter.get(
+  '/users/:id',
+  asyncHandler((req: Request, res: Response) => userController.getUserConnections(req, res))
+);
+
 export default userRouter;
