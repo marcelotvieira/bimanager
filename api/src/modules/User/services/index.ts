@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { generateToken } from 'src/utils/tokenHandle';
 import { ApiError } from '../../../Error/ApiError';
 import { prisma } from '../../../prisma/prisma';
-import generateToken from '../../../utils/generateJwt';
 
 interface UserAuthenticationData {
   username: string;
@@ -12,15 +12,23 @@ interface UserAuthenticationData {
 export class UserService {
   private _userModel = prisma.user;
 
-  private async get() {
+  private async get(where?: Prisma.UserWhereInput) {
     return await this._userModel.findMany(
       {
+        where,
         select: {
           id: true,
           email: true,
           username: true,
           isRandomPassword: true,
-          databases: true
+          databases: {
+            select: {
+              id: true,
+              name: true,
+              connection: true,
+              queries: true,
+            }
+          }
         }
       }
     );
