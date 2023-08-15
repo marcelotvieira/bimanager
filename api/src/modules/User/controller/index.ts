@@ -18,6 +18,8 @@ export class UserController {
   }
 
   public async getUserConnections(req: Request, res: Response) {
+    // const { authorization } = req.headers;
+    // const decodedUser = await validateToken(authorization);
     const user = await this._service.getUserConnections(req.params.id);
     res.status(200).json(user);
   }

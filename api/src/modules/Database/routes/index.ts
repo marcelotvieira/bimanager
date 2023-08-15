@@ -7,6 +7,7 @@ const databaseRouter = Router();
 
 const databaseController = new DatabaseController(new DatabaseService());
 
+
 databaseRouter.post(
   '/connection/register',
   asyncHandler((req: Request, res: Response) => databaseController.create(req, res))
@@ -15,6 +16,11 @@ databaseRouter.post(
 databaseRouter.put(
   '/connection/:id',
   asyncHandler((req: Request, res: Response) => databaseController.update(req, res))
+);
+
+databaseRouter.post(
+  '/customer/get_data',
+  asyncHandler((req: Request, res: Response) => databaseController.connectAndExecute(req, res))
 );
 
 export default databaseRouter;

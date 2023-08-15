@@ -9,7 +9,7 @@ export const errorHanlder = (
   _next: NextFunction
 ) => {
   if (error instanceof ApiError) {
-    return res.status(400).json({ message: error.message });
+    return res.status(error.statusCode).json({ message: error.message });
   }
   return res.status(400).json({
     message: 'Unhandled Error',

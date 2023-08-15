@@ -65,7 +65,7 @@ export class UserService {
   public async create(payload: Prisma.UserCreateInput) {
     const password = await bcrypt.hash(payload.password, 10);
     const newUser = await this._userModel.create({ data: { ...payload, password } });
-    const token = generateToken({ email: newUser.email, username: newUser.username });
+    const token = generateToken({ email: newUser.email, username: newUser.username, id: newUser.id });
     return { token };
   }
 
@@ -88,9 +88,13 @@ export class UserService {
       return ApiError.notFound('Invalid credentials');
     }
 
-    const token = generateToken({ email: user.email, username: user.username });
+    const token = generateToken({ email: user.email, username: user.username, id: user.id});
 
-    return { token };
+    return { token, user: {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    } };
 
   }
 

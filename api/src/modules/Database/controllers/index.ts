@@ -28,4 +28,10 @@ export class DatabaseController {
     });
   }
 
+  public async connectAndExecute(req: Request, res: Response) {
+    const { connectionId, queryId, initialDate, finalDate } = req.body;
+    const data = await this._service.connectAndExecute(connectionId, queryId, initialDate, finalDate);
+    res.status(200).json(data);
+  }
+
 }
