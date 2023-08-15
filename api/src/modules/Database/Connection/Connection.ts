@@ -40,16 +40,13 @@ export class Connection {
       queueLimit: 0
     };
 
-    console.log(connectionConfigData);
     const connection = mysql.createPool(connectionConfigData);
     return connection;
   }
 
   public async execute(query: string, values?: string[]) {
-    console.log(query);
     try {
       const [rows] = await this._db.execute(query, values);
-      console.log(rows);
       return rows;
     } catch (error) {
       console.error('Erro na consulta:', error);
