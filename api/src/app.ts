@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 import * as express from 'express';
 import { errorHanlder } from './Error/errorHandler';
+import databaseRouter from './modules/Database/routes';
 import userRouter from './modules/User/routes';
 
 class App {
@@ -21,6 +22,7 @@ class App {
 
   private routes(): void {
     this.app.use(userRouter);
+    this.app.use(databaseRouter);
   }
 
   private errorConfig(): void {

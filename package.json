@@ -10,8 +10,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/mysql2": "github:types/mysql2",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
     "eslint": "^8.46.0"
+  },
+  "dependencies": {
+    "mysql2": "^3.6.0"
   }
 }

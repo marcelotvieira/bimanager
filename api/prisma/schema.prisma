@@ -27,5 +27,13 @@ model Database {
   updatedAt  DateTime @updatedAt
 
   ownerId Int
-  owner   User @relation(fields: [ownerId], references: [id])
+  queries Query[] @relation("QueryToDatabase")
+  owner   User    @relation(fields: [ownerId], references: [id])
+}
+
+model Query {
+  id        Int        @id @default(autoincrement())
+  name      String
+  query     String     @db.Text
+  databases Database[] @relation("QueryToDatabase")
 }
