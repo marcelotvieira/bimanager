@@ -1,3 +1,4 @@
+import * as cors from 'cors';
 import * as dotenv from 'dotenv';
 import * as express from 'express';
 import { errorHanlder } from './Error/errorHandler';
@@ -18,6 +19,7 @@ class App {
   private config(): void {
     this.app.use(express.json());
     dotenv.config();
+    this.app.use(cors());
   }
 
   private routes(): void {

@@ -1,8 +1,9 @@
 import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 import { ApiError } from '../../../Error/ApiError';
 import { prisma } from '../../../prisma/prisma';
-import { generateToken } from '../../../utils/tokenHandle';
+import { generateToken, validateToken } from '../../../utils/tokenHandle';
 
 interface UserAuthenticationData {
   username: string;
@@ -21,8 +22,13 @@ export class UserService {
       select: {
         id: true,
         name: true,
-        connection: true,
-        queries: true,
+        queries: {
+          select: {
+            id: true,
+            name: true,
+          }
+         
+        },
       }
     }
   };
@@ -98,4 +104,12 @@ export class UserService {
 
   }
 
+  public async authenticateToken(token: string): Promise<void | jwt.JwtPayload> {
+    try {
+      const user = await validateToken(token);
+      return user;
+    } catch (error) {
+      ApiError.unauthorized('Unauthorized');
+    }
+  }
 }

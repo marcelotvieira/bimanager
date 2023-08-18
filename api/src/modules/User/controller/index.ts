@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { ApiError } from '../../../Error/ApiError';
 import { UserService } from '../services';
 
 export class UserController {
@@ -22,6 +23,13 @@ export class UserController {
     // const decodedUser = await validateToken(authorization);
     const user = await this._service.getUserConnections(req.params.id);
     res.status(200).json(user);
+  }
+
+  public async authenticateToken(req: Request, res: Response) {
+    const { authorization } = req.headers;
+    if (!authorization) return ApiError.unauthorized('Unauthorized');
+    const auth = await this._service.authenticateToken(authorization);
+    res.status(200).json(auth);
   }
   
 }
