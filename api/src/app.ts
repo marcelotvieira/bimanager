@@ -11,15 +11,17 @@ class App {
   constructor() {
     this.app = express();
     this.config();
-    this.app.get('/', (_req, res) => res.json({ message: 'ok' }));
     this.routes();
+    this.app.get('/', (_req, res) => res.json({ message: 'ok' }));
     this.errorConfig();
   }
 
   private config(): void {
+    this.app.use(cors(
+     
+    ));
     this.app.use(express.json());
     dotenv.config();
-    this.app.use(cors());
   }
 
   private routes(): void {

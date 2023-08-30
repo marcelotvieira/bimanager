@@ -28,6 +28,11 @@ export class DatabaseController {
     });
   }
 
+  public async get(req: Request, res: Response) {
+    const connectionData = await this._service.getDatabaseData(Number(req.params.id));
+    res.status(200).json(connectionData);
+  }
+
   public async connectAndExecute(req: Request, res: Response) {
     const { connectionId, queryId, initialDate, finalDate } = req.body;
     const data = await this._service.connectAndExecute(connectionId, queryId, initialDate, finalDate);

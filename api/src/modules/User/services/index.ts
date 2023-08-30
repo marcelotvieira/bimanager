@@ -26,8 +26,10 @@ export class UserService {
           select: {
             id: true,
             name: true,
+            isCompatibleWithPeriod: true,
+            chartYAxisKey: true,
+            chartXAxisKey: true,
           }
-         
         },
       }
     }

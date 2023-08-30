@@ -35,5 +35,8 @@ model Query {
   id        Int        @id @default(autoincrement())
   name      String
   query     String     @db.Text
+  isCompatibleWithPeriod Boolean @default(true)
+  chartYAxisKey String @default("")
+  chartXAxisKey String @default("")
   databases Database[] @relation("QueryToDatabase")
 }

@@ -1,6 +1,5 @@
 import { Request, Response, Router } from 'express';
 import * as asyncHandler from 'express-async-handler';
-import { checkToken } from '../../../middlewares';
 import { UserController } from '../controller';
 import { UserService } from '../services';
 
@@ -22,7 +21,7 @@ userRouter.post(
 
 userRouter.get(
   '/users/:id',
-  asyncHandler(checkToken),
+  // asyncHandler(checkToken),
   asyncHandler((req: Request, res: Response) => userController.getUserConnections(req, res))
 );
 

@@ -22,7 +22,7 @@ export class UserController {
     // const { authorization } = req.headers;
     // const decodedUser = await validateToken(authorization);
     const user = await this._service.getUserConnections(req.params.id);
-    res.status(200).json(user);
+    res.status(200).send(user);
   }
 
   public async authenticateToken(req: Request, res: Response) {
